@@ -14,11 +14,11 @@ struct ImmersiveView: View {
     var body: some View {
         RealityView { content in
             // Add the initial RealityKit content
-            if let immersiveContentEntity = try? await Entity(named: "Immersive", in: realityKitContentBundle) {
-                content.add(immersiveContentEntity)
+            if let root = try? await Entity(named: "Immersive", in: realityKitContentBundle) {
+                content.add(root)
 
-                if let sphere = immersiveContentEntity.findEntity(named: "Sphere") {
-                    sphere.scale = .init(x: -1, y: 1, z: 1)
+                if let dome = root.findEntity(named: "Dome") {
+                    dome.scale = .init(x: -1, y: 1, z: 1)
                 }
             }
         }

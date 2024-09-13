@@ -7,37 +7,7 @@
 
 def Xform "Root"
 {
-    reorder nameChildren = ["Sphere_Left", "Sphere_Right", "GridMaterial", "light_bulb_rad", "Sphere", "Floor", "SmoothConcrete"]
-    def Sphere "Sphere_Right" (
-        active = true
-        prepend apiSchemas = ["MaterialBindingAPI"]
-    )
-    {
-        rel material:binding = </Root/GridMaterial/GridMaterial> (
-            bindMaterialAs = "weakerThanDescendants"
-        )
-        double radius = 0.1
-        quatf xformOp:orient = (1, 0, 0, 0)
-        float3 xformOp:scale = (1, 1, 1)
-        float3 xformOp:translate = (0.5, 1.5, -1.5)
-        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
-    }
-
-    def Sphere "Sphere_Left" (
-        active = true
-        prepend apiSchemas = ["MaterialBindingAPI"]
-    )
-    {
-        rel material:binding = </Root/GridMaterial/GridMaterial> (
-            bindMaterialAs = "weakerThanDescendants"
-        )
-        double radius = 0.1
-        quatf xformOp:orient = (1, 0, 0, 0)
-        float3 xformOp:scale = (1, 1, 1)
-        float3 xformOp:translate = (-0.5, 1.5, -1.5)
-        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
-    }
-
+    reorder nameChildren = ["GridMaterial", "light_bulb_rad", "Dome", "Floor", "FloorMat", "DomeMat"]
     def "GridMaterial" (
         active = true
         references = @Materials/GridMaterial.usda@
@@ -58,11 +28,11 @@ def Xform "Root"
         uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
     }
 
-    def Sphere "Sphere" (
+    def Sphere "Dome" (
         prepend apiSchemas = ["MaterialBindingAPI"]
     )
     {
-        rel material:binding = </Root/BlackABSPlastic> (
+        rel material:binding = </Root/DomeMat> (
             bindMaterialAs = "weakerThanDescendants"
         )
         double radius = 4.8
@@ -79,7 +49,7 @@ def Xform "Root"
         prepend apiSchemas = ["MaterialBindingAPI"]
     )
     {
-        rel material:binding = </Root/SmoothConcrete> (
+        rel material:binding = </Root/FloorMat> (
             bindMaterialAs = "weakerThanDescendants"
         )
         double size = 1
@@ -100,7 +70,7 @@ def Xform "Root"
         }
     }
 
-    def "SmoothConcrete" (
+    def "FloorMat" (
         active = true
         references = @SmoothConcrete.usdz@
     )
@@ -108,16 +78,9 @@ def Xform "Root"
         float2 inputs:UV_Scale = (10, 10)
     }
 
-    def "ScratchedMetallicPaint" (
+    def "DomeMat" (
         active = true
-        prepend references = @ScratchedMetallicPaint.usdz@
-    )
-    {
-    }
-
-    def "BlackABSPlastic" (
-        active = true
-        prepend references = @BlackABSPlastic.usdz@
+        references = @BlackABSPlastic.usdz@
     )
     {
         float2 inputs:UV_Scale = (10, 10)

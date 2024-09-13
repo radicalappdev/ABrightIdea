@@ -13,10 +13,11 @@ struct ContentView: View {
 
     var body: some View {
         VStack {
-            Model3D(named: "Scene", bundle: realityKitContentBundle)
-                .padding(.bottom, 50)
 
-            Text("Hello, world!")
+
+            Text("Enter the")
+            Text("Bright Idea Dome")
+                .font(.extraLargeTitle2)
 
             ToggleImmersiveSpaceButton()
         }
