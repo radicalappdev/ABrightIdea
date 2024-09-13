@@ -30,15 +30,16 @@ struct ImmersiveView: View {
             .targetedToAnyEntity()
             .onChanged { value in
 
-                let newPostion = value.convert(value.location3D, from: .global, to: value.entity.parent!)
+                let newPostion = value.convert(value.location3D, from: .local, to: value.entity.parent!)
 
                 let limit: Float = 2
                 value.entity.position.x = min(max(newPostion.x, -limit), limit)
+                value.entity.position.y = min(max(newPostion.y, 0.1), limit)
                 value.entity.position.z = min(max(newPostion.z, -limit), limit)
 
             }
             .onEnded { value in
-                value.entity.position.y = value.entity.position.y - 0.01
+                // TODO: Save the item position
             }
     }
 }
