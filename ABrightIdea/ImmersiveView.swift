@@ -17,11 +17,12 @@ struct ImmersiveView: View {
             if let immersiveContentEntity = try? await Entity(named: "Immersive", in: realityKitContentBundle) {
                 content.add(immersiveContentEntity)
 
-                // Put skybox here.  See example in World project available at
-                // https://developer.apple.com/
+                if let sphere = immersiveContentEntity.findEntity(named: "Sphere") {
+                    sphere.scale = .init(x: -1, y: 1, z: 1)
+                }
             }
         }
-        .preferredSurroundingsEffect(.ultraDark)
+//        .preferredSurroundingsEffect(.ultraDark)
     }
 }
 
