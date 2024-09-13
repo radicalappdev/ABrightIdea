@@ -28,6 +28,6 @@ struct ABrightIdeaApp: App {
                     appModel.immersiveSpaceState = .closed
                 }
         }
-//        .immersionStyle(selection: .constant(.full), in: .full)
+        .immersionStyle(selection: .constant(.full), in: .full)
     }
 }

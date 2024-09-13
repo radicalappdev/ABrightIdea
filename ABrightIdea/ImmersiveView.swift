@@ -22,6 +22,24 @@ struct ImmersiveView: View {
                 }
             }
         }
+        .gesture(dragGesture)
+    }
+
+    var dragGesture: some Gesture {
+        DragGesture()
+            .targetedToAnyEntity()
+            .onChanged { value in
+
+                let newPostion = value.convert(value.location3D, from: .global, to: value.entity.parent!)
+
+                let limit: Float = 2
+                value.entity.position.x = min(max(newPostion.x, -limit), limit)
+                value.entity.position.z = min(max(newPostion.z, -limit), limit)
+
+            }
+            .onEnded { value in
+                value.entity.position.y = value.entity.position.y - 0.01
+            }
     }
 }
 

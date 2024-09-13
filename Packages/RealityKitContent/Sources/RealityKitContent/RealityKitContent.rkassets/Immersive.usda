@@ -7,7 +7,7 @@
 
 def Xform "Root"
 {
-    reorder nameChildren = ["GridMaterial", "light_bulb_rad", "Dome", "Floor", "FloorMat", "DomeMat"]
+    reorder nameChildren = ["GridMaterial", "LightBulb", "Dome", "Floor", "FloorMat", "DomeMat"]
     def "GridMaterial" (
         active = true
         references = @Materials/GridMaterial.usda@
@@ -17,7 +17,7 @@ def Xform "Root"
         uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
     }
 
-    def "light_bulb_rad" (
+    def "LightBulb" (
         active = true
         references = @light-bulb-rad.usdc@
     )
@@ -26,6 +26,32 @@ def Xform "Root"
         float3 xformOp:scale = (1, 1, 1)
         float3 xformOp:translate = (0, 1.1888162, -1.2053841)
         uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+
+        def RealityKitComponent "InputTarget"
+        {
+            uniform token info:id = "RealityKit.InputTarget"
+        }
+
+        def RealityKitComponent "Collider"
+        {
+            uint group = 1
+            uniform token info:id = "RealityKit.Collider"
+            uint mask = 4294967295
+            token type = "Default"
+
+            def RealityKitStruct "Shape"
+            {
+                float3 extent = (0.0558661, 0.1049836, 0.0558661)
+                float height = 0.1049836
+                float radius = 0.02793305
+                token shapeType = "Capsule"
+
+                def RealityKitStruct "pose"
+                {
+                    float3 position = (0, 0.0717243, -4.0978193e-8)
+                }
+            }
+        }
     }
 
     def Sphere "Dome" (

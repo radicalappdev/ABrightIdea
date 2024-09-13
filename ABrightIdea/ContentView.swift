@@ -14,7 +14,6 @@ struct ContentView: View {
     var body: some View {
         VStack {
 
-
             Text("Enter the")
             Text("Bright Idea Dome")
                 .font(.extraLargeTitle2)
