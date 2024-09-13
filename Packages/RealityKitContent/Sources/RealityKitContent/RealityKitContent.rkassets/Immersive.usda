@@ -62,10 +62,10 @@ def Xform "Root"
         prepend apiSchemas = ["MaterialBindingAPI"]
     )
     {
-        rel material:binding = </Root/ScratchedMetallicPaint> (
+        rel material:binding = </Root/BlackABSPlastic> (
             bindMaterialAs = "weakerThanDescendants"
         )
-        double radius = 5
+        double radius = 4.8
         float2 ui:nodegraph:node:pos = (20, 20)
         int ui:nodegraph:node:stackingOrder = 1
         quatf xformOp:orient = (1, 0, 0, 0)
@@ -83,7 +83,7 @@ def Xform "Root"
             bindMaterialAs = "weakerThanDescendants"
         )
         double size = 1
-        float3 xformOp:scale = (6, 0.1, 6)
+        float3 xformOp:scale = (10, 0.1, 10)
         uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
 
         def Material "DefaultMaterial"
@@ -105,6 +105,7 @@ def Xform "Root"
         references = @SmoothConcrete.usdz@
     )
     {
+        float2 inputs:UV_Scale = (10, 10)
     }
 
     def "ScratchedMetallicPaint" (
@@ -112,6 +113,14 @@ def Xform "Root"
         prepend references = @ScratchedMetallicPaint.usdz@
     )
     {
+    }
+
+    def "BlackABSPlastic" (
+        active = true
+        prepend references = @BlackABSPlastic.usdz@
+    )
+    {
+        float2 inputs:UV_Scale = (10, 10)
     }
 }
 

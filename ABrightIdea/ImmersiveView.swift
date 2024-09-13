@@ -22,7 +22,6 @@ struct ImmersiveView: View {
                 }
             }
         }
-//        .preferredSurroundingsEffect(.ultraDark)
     }
 }
 
