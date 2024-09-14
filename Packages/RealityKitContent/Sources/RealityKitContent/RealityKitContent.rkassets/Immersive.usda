@@ -52,6 +52,12 @@ def Xform "Root"
                 }
             }
         }
+
+        over "LightSource" (
+            active = false
+        )
+        {
+        }
     }
 
     def Sphere "Dome" (
