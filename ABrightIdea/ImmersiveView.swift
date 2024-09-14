@@ -16,6 +16,7 @@ enum LightType: CGFloat {
 }
 
 struct ImmersiveView: View {
+    @Environment(AppModel.self) private var appModel
 
     @State var lightType: LightType = .regular
 
@@ -29,9 +30,11 @@ struct ImmersiveView: View {
                     dome.scale = .init(x: -1, y: 1, z: 1)
                 }
 
-                if let lightSource = root.findEntity(named: "LightBulbs") {
-                    // TODO: clone this 9 times and move it to random positions within 2 m of center
-                    for _ in 0..<9 {
+                if let lightSource = root.findEntity(named: "LightBulb") {
+                    print("LIGHT Factory \(appModel.totalTempLights)")
+
+                    for index in 0..<appModel.totalTempLights {
+                        print("LIGHT Factory \(index)")
                         let lightSourceCopy = lightSource.clone(recursive: true)
                         let randomX = Float.random(in: -2...2)
                         let randomY = Float.random(in: 0...2)
