@@ -24,21 +24,21 @@ struct ContentView: View {
 
             ToggleImmersiveSpaceButton()
 
-//            Slider(value: $tempLightValue,
-//                   in: 0.5...10.5,
-//                   minimumValueLabel: Text("Dim"),
-//                   maximumValueLabel: Text("Bight"),
-//                   label: {
-//                        Text("Light")
-//                   }
-//            )
+            Slider(value: $tempLightValue,
+                   in: 0.5...10.5,
+                   minimumValueLabel: Text("Dim"),
+                   maximumValueLabel: Text("Bight"),
+                   label: {
+                        Text("Light")
+                   }
+            )
 
 
         }
         .padding()
-//        .onChange(of: tempLightValue) { _, newValue in
-//            appModel.lightIntensity = Float(newValue)
-//        }
+        .onChange(of: tempLightValue) { _, newValue in
+            appModel.lightIntensity = Float(newValue)
+        }
     }
 }
 

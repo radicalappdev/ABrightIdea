@@ -79,9 +79,9 @@ struct ImmersiveView: View {
                                 print("LIGHT found ")
                                 if var material =  entity.components[ModelComponent.self]?.materials.first as? PhysicallyBasedMaterial {
 
-                                    material.emissiveIntensity = 1 * pointLight.intensity
+                                    material.emissiveIntensity = 1 * appModel.lightIntensity
 
-                                    print("LIGHT Intensity \(material.emissiveIntensity)")
+                                    print("LIGHT emissive \(material.emissiveIntensity)")
 
                                     entity.components[ModelComponent.self]?.materials[0] = material
                                 }
