@@ -7,7 +7,7 @@
 
 def Xform "Root"
 {
-    reorder nameChildren = ["GridMaterial", "LightBulb", "Dome", "Floor", "FloorMat", "DomeMat"]
+    reorder nameChildren = ["GridMaterial", "LightBulb", "Dome", "Floor", "FloorMat", "DomeMat", "Particles"]
     def "GridMaterial" (
         active = true
         references = @Materials/GridMaterial.usda@
@@ -55,6 +55,7 @@ def Xform "Root"
     }
 
     def Sphere "Dome" (
+        active = false
         prepend apiSchemas = ["MaterialBindingAPI"]
     )
     {
