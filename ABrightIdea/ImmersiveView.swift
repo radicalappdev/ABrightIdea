@@ -65,25 +65,12 @@ struct ImmersiveView: View {
             if let root = content.entities.first {
                 if let lightSource = root.findEntity(named: "LightBulb") {
 
-                    // scale the light source based on appModel.lightIntensity
-//                    let minScale: Float = 0.5
-//                    let maxScale: Float = 5
-//                    let scaler: Float = minScale + (maxScale - minScale) * appModel.lightIntensity
-//                    print("LIGHT Scale: \(scaler)")
-//                    lightSource.scale = .init(x: scaler, y: scaler, z: scaler)
-
-//                    let scaler = Float(appModel.lightIntensity) * 1
-//                    let minScale: Float = 0.5
-//                    let maxScale: Float = 10.5
-//                    let scaled = min(Float(max(Float(scaler), minScale)), maxScale) / 10
-//                    lightSource.scale = .init(x: scaled, y: scaled, z: scaled)
-
-//                    let scaled = appModel.lightIntensity
-//                    lightSource.scale = .init(x: scaled, y: scaled, z: scaled)
 
                     if let lightSource = lightSource.findEntity(named: "LightSource") {
                         if var pointLight = lightSource.components[PointLightComponent.self] {
-                            pointLight.intensity = appModel.lightIntensity * 26963.76
+                            pointLight.intensity = appModel.lightIntensity * 26963.76 / 10
+//                            pointLight.attenuationRadius = 100 * appModel.lightIntensity
+//                            pointLight.attenuationFalloffExponent = 1 * appModel.lightIntensity
                             print("LIGHT Intensity: \(pointLight.intensity)")
                             lightSource.components.set(pointLight)
 
@@ -153,7 +140,7 @@ struct ImmersiveView: View {
             .onChanged { value in
 
                 let magnification: Float = Float(value.magnification)
-                print("SCALE GESTURE: \(magnification)")
+//                print("SCALE GESTURE: \(magnification)")
 
                 if entityTransformAtStartOfGesture == nil {
                     entityTransformAtStartOfGesture = value.entity.transform
@@ -166,6 +153,9 @@ struct ImmersiveView: View {
                     let scaled = min(Float(max(Float(scaler), minScale)), maxScale)
                     let newScale = SIMD3(x: scaled, y: scaled, z: scaled)
                     value.entity.setScale(newScale, relativeTo: value.entity.parent!)
+
+//                    print("LIGHT SCALE: \(scaled)")
+                    appModel.lightIntensity = scaled
 
                 }
 
