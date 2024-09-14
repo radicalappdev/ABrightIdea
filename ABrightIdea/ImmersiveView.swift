@@ -23,13 +23,10 @@ enum LightType: Float {
 
 struct ImmersiveView: View {
     @Environment(AppModel.self) private var appModel
-    @Environment(\.realityKitScene) var scene
 
     @State var lightType: LightType = .regular
 
     @State private var entityTransformAtStartOfGesture: Transform?
-
-    private let notificationTrigger = NotificationCenter.default.publisher(for: Notification.Name("RealityKit.NotificationTrigger"))
 
 
     var body: some View {
@@ -42,40 +39,19 @@ struct ImmersiveView: View {
                     dome.scale = .init(x: -1, y: 1, z: 1)
                 }
 
-//                if let lightBulbTemplate = root.findEntity(named: "LightBulb") {
+                if let lightBulbTemplate = root.findEntity(named: "LightBulb") {
                     // Get the RCP entity and save it as a template
-//                    content.add(lightBulbTemplate)
-//                    lightBulbTemplate.isEnabled = false
+                    lightBulbTemplate.isEnabled = false
 
                     // Create the first light buld from the template and place it directly in front of the player
-//                    let newLightBulb = lightBulbTemplate.clone(recursive: true)
-//                    newLightBulb.isEnabled = true
-//
-//                    newLightBulb.position = SIMD3(x: 0, y: 1, z: -1)
-//                    content.add(newLightBulb)
-//                }
+                    let newLightBulb = lightBulbTemplate.clone(recursive: true)
+                    newLightBulb.isEnabled = true
 
-//                if let lightSource = root.findEntity(named: "LightBulb") {
-//                    for _ in 0..<7 {
-//                        let lightSourceCopy = lightSource.clone(recursive: true)
-//                        let randomX = Float.random(in: -2...2)
-//                        let randomY = Float.random(in: 0...2)
-//                        let randomZ = Float.random(in: -2...2)
-//
-//                        lightSourceCopy.position = SIMD3(x: randomX, y: randomY, z: randomZ)
-//
-//                        if let lightSource = lightSourceCopy.findEntity(named: "LightSource") {
-//                            if var pointLight = lightSource.components[PointLightComponent.self] {
-//                                pointLight.intensity = Float.random(in: 1000...53927.52)
-//                                print("LIGHT Intensity: \(pointLight.intensity)")
-//                                lightSource.components.set(pointLight)
-//                            }
-//
-//                        }
-//
-//                        content.add(lightSourceCopy)
-//                    }
-//                }
+                    newLightBulb.position = SIMD3(x: 0, y: 1, z: -1)
+                    content.add(newLightBulb)
+                }
+
+
             }
         } update: { content in
 
@@ -84,9 +60,11 @@ struct ImmersiveView: View {
                 if let lightBulbTemplate = root.findEntity(named: "LightBulb") {
 
                     if(appModel.shouldAddBulb) {
+                        appModel.shouldAddBulb = false
 
                         print("LIGHT Adding in Update")
                         let newLightBulb = lightBulbTemplate.clone(recursive: true)
+                        newLightBulb.isEnabled = true
                         newLightBulb.name = UUID().uuidString
                         let randomX = Float.random(in: -2...2)
                         let randomY = Float.random(in: 0...2)
@@ -97,17 +75,6 @@ struct ImmersiveView: View {
                         content.add(newLightBulb)
                         print("LIGHT Added: \(newLightBulb)")
 
-                        // Send notification LightBuldStart
-                        NotificationCenter.default.post(
-                            name: NSNotification.Name("RealityKit.NotificationTrigger"),
-                            object: nil,
-                            userInfo: [
-                                "RealityKit.NotificationTrigger.Scene": scene,
-                                "RealityKit.NotificationTrigger.Identifier": "LightBuldStart"
-                            ]
-                        )
-
-                        appModel.shouldAddBulb = false
 
                     }
 
@@ -120,22 +87,6 @@ struct ImmersiveView: View {
         .gesture(dragGesture)
         .gesture(scaleGesture)
 
-        .onReceive(notificationTrigger) { output in
-
-//            print("LIGHT NOTIFICATION: \(output)")
-
-            if let notificationName = output.userInfo?["RealityKit.NotificationTrigger.Identifier"] as? String {
-                print("LIGHT NOTIFICATION: \(notificationName)")
-
-                if(notificationName == "LightBulbEnding") {
-                    appModel.shouldAddBulb = true
-                    print("LIGHT NOTIFICATION: \(appModel.shouldAddBulb)")
-                }
-
-            }
-
-
-        }
     }
 
     var tapGesture: some Gesture {
@@ -151,6 +102,8 @@ struct ImmersiveView: View {
                     lightType = .dim
                 }
                 print("TAP GESTURE: \(lightType)")
+
+                appModel.shouldAddBulb = true
             }
     }
 
