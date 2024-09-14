@@ -24,7 +24,7 @@ def Xform "Root"
     {
         quatf xformOp:orient = (1, 0, 0, 0)
         float3 xformOp:scale = (1, 1, 1)
-        float3 xformOp:translate = (0, 1.1888162, -1.2053841)
+        float3 xformOp:translate = (0.99590325, 1.1888162, -1.2053841)
         uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
 
         def RealityKitComponent "InputTarget"
@@ -53,7 +53,9 @@ def Xform "Root"
             }
         }
 
-        over "LightSource"
+        over "LightSource" (
+            active = false
+        )
         {
         }
 
@@ -90,6 +92,7 @@ def Xform "Root"
     }
 
     def Sphere "Dome" (
+        active = false
         prepend apiSchemas = ["MaterialBindingAPI"]
     )
     {
