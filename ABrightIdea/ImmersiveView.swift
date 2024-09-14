@@ -65,10 +65,23 @@ struct ImmersiveView: View {
 
                     if let lightSource = lightSource.findEntity(named: "LightSource") {
                         if var pointLight = lightSource.components[PointLightComponent.self] {
-                            pointLight.intensity = appModel.lightIntensity
-//                            pointLight.intensity = lightType.rawValue
+                            pointLight.intensity = appModel.lightIntensity * 26963.76
                             print("LIGHT Intensity: \(pointLight.intensity)")
                             lightSource.components.set(pointLight)
+
+//                            if let entity = root.findEntity(named: "Glass")
+//                            {
+//                                print("LIGHT found ")
+//                                if var material =  entity.components[ModelComponent.self]?.materials.first as? PhysicallyBasedMaterial {
+//
+//                                    material.emissiveIntensity = 50
+//
+//                                    print("LIGHT Intensity \(material.emissiveIntensity)")
+//
+//                                    entity.components[ModelComponent.self]?.materials[0] = material
+//                                }
+//
+//                            }
                         }
 
                     }

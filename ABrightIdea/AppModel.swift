@@ -19,6 +19,6 @@ class AppModel {
     }
     var immersiveSpaceState = ImmersiveSpaceState.closed
 
-    var lightIntensity: Float = 26963.76
+    var lightIntensity: Float = 1
 
 }

@@ -37,7 +37,7 @@ struct ContentView: View {
         }
         .padding()
         .onChange(of: tempLightValue) { _, newValue in
-            appModel.lightIntensity = Float(newValue * 26963.76)
+            appModel.lightIntensity = Float(newValue)
         }
     }
 }
