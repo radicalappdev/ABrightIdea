@@ -52,7 +52,7 @@ struct ImmersiveView: View {
                     if appModel.cachedPointLight == nil, let pointLight = root.findEntity(named: "SelectedPointLight") {
                         print("LIGHT Loaded in scene: \(pointLight)")
                         appModel.cachedPointLight = pointLight
-                        print("LIGHT point light entity: \(appModel.cachedPointLight)") // THIS CAN SEE THE VALUE
+                        
                         newLightBulb.addChild(pointLight)
                         pointLight.setPosition([0,0.088,0], relativeTo: newLightBulb)
                     }
@@ -75,8 +75,6 @@ struct ImmersiveView: View {
                         newLightBulb.position = SIMD3(x: randomX, y: randomY, z: randomZ)
                         content.add(newLightBulb)
                         print("LIGHT Added: \(newLightBulb)")
-
-                        print("LIGHT point light entity: \(appModel.cachedPointLight)") // BUT WHEN WE GET HERE IT IS NULL
 
                         if let pointLight = appModel.cachedPointLight {
                             print("LIGHT Point: \(pointLight)") // THIS IS STILL NOT RUNNING

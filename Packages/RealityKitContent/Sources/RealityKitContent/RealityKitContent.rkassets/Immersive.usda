@@ -7,7 +7,7 @@
 
 def Xform "Root"
 {
-    reorder nameChildren = ["SelectedPointLight", "GridMaterial", "LightBulb", "Dome", "Floor", "FloorMat", "DomeMat"]
+    reorder nameChildren = ["SelectedPointLight", "ImageBasedLight", "GridMaterial", "LightBulb", "Dome", "Floor", "FloorMat", "DomeMat"]
     def "GridMaterial" (
         active = true
         references = @Materials/GridMaterial.usda@
@@ -103,6 +103,12 @@ def Xform "Root"
         float3 xformOp:scale = (1, 1, 1)
         float3 xformOp:translate = (0, 0, 0)
         uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+
+        def RealityKitComponent "ImageBasedLightReceiver"
+        {
+            rel iblEntity = </Root/ImageBasedLight>
+            uniform token info:id = "RealityKit.ImageBasedLightReceiver"
+        }
     }
 
     def Cube "Floor" (
@@ -129,6 +135,12 @@ def Xform "Root"
                 token outputs:surface
             }
         }
+
+        def RealityKitComponent "ImageBasedLightReceiver"
+        {
+            rel iblEntity = </Root/ImageBasedLight>
+            uniform token info:id = "RealityKit.ImageBasedLightReceiver"
+        }
     }
 
     def "FloorMat" (
@@ -152,6 +164,18 @@ def Xform "Root"
         def RealityKitComponent "PointLight"
         {
             token info:id = "RealityKit.PointLight"
+        }
+    }
+
+    def Xform "ImageBasedLight" (
+        active = true
+    )
+    {
+        def RealityKitComponent "ImageBasedLight"
+        {
+            asset ibl = @black-light.png@
+            uniform token info:id = "RealityKit.ImageBasedLight"
+            bool isGlobalIBL = 0
         }
     }
 }
