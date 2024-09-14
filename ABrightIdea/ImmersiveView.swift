@@ -30,20 +30,6 @@ struct ImmersiveView: View {
                     dome.scale = .init(x: -1, y: 1, z: 1)
                 }
 
-//                if let entity = root.findEntity(named: "Glass")
-//                {
-//                    print("LIGHT found ")
-//                    if var material =  entity.components[ModelComponent.self]?.materials.first as? PhysicallyBasedMaterial {
-//
-//                        material.emissiveIntensity = 50
-//
-//                        print("LIGHT Intensity \(material.emissiveIntensity)")
-//
-//                        entity.components[ModelComponent.self]?.materials[0] = material
-//                    }
-//
-//                }
-
                 if let lightSource = root.findEntity(named: "LightBulb") {
                     print("LIGHT Factory \(appModel.totalTempLights)")
 
@@ -55,20 +41,6 @@ struct ImmersiveView: View {
                         let randomZ = Float.random(in: -2...2)
 
                         lightSourceCopy.position = SIMD3(x: randomX, y: randomY, z: randomZ)
-
-                        if let entity = lightSourceCopy.findEntity(named: "Glass")
-                        {
-                            print("LIGHT found ")
-                            if var material =  entity.components[ModelComponent.self]?.materials.first as? PhysicallyBasedMaterial {
-
-                                material.emissiveIntensity = Float(index) * 10
-
-                                print("LIGHT Intensity \(material.emissiveIntensity)")
-
-                                entity.components[ModelComponent.self]?.materials[0] = material
-                            }
-
-                        }
 
                         content.add(lightSourceCopy)
                     }
