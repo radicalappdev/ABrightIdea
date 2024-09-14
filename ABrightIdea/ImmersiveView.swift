@@ -9,7 +9,15 @@ import SwiftUI
 import RealityKit
 import RealityKitContent
 
+enum LightType: CGFloat {
+    case dim =  13481.88
+    case regular = 26963.76
+    case bright = 53927.52
+}
+
 struct ImmersiveView: View {
+
+    @State var lightType: LightType = .regular
 
     var body: some View {
         RealityView { content in
@@ -22,7 +30,24 @@ struct ImmersiveView: View {
                 }
             }
         }
+        .gesture(tapGesture)
         .gesture(dragGesture)
+    }
+
+    var tapGesture: some Gesture {
+        SpatialTapGesture()
+            .targetedToAnyEntity()
+            .onEnded { value in
+//                let selected = value.entity.name
+                if(lightType == .dim) {
+                    lightType = .regular
+                } else if (lightType == .regular) {
+                    lightType = .bright
+                } else if (lightType == .bright) {
+                    lightType = .dim
+                }
+                print("TAP GESTURE: \(lightType)")
+            }
     }
 
     var dragGesture: some Gesture {
