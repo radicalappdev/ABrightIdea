@@ -21,4 +21,6 @@ class AppModel {
 
     var lightIntensity: Float = 1
 
+    var shouldAddBulb: Bool = false
+
 }

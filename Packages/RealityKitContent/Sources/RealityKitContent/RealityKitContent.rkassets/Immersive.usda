@@ -53,9 +53,7 @@ def Xform "Root"
             }
         }
 
-        over "LightSource" (
-            active = false
-        )
+        over "LightSource"
         {
         }
 
@@ -92,7 +90,6 @@ def Xform "Root"
     }
 
     def Sphere "Dome" (
-        active = false
         prepend apiSchemas = ["MaterialBindingAPI"]
     )
     {
