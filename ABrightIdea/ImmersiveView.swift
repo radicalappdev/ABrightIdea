@@ -28,7 +28,33 @@ struct ImmersiveView: View {
                 if let dome = root.findEntity(named: "Dome") {
                     dome.scale = .init(x: -1, y: 1, z: 1)
                 }
+
+                if let lightSource = root.findEntity(named: "LightBulbs") {
+                    // TODO: clone this 9 times and move it to random positions within 2 m of center
+                    for _ in 0..<9 {
+                        let lightSourceCopy = lightSource.clone(recursive: true)
+                        let randomX = Float.random(in: -2...2)
+                        let randomY = Float.random(in: 0...2)
+                        let randomZ = Float.random(in: -2...2)
+
+                        lightSourceCopy.position = SIMD3(x: randomX, y: randomY, z: randomZ)
+                        content.add(lightSourceCopy)
+                    }
+                }
             }
+        } update: { content in
+
+            if let rootEntity = content.entities.first {
+                if let lightSource = rootEntity.findEntity(named: "LightSource") {
+//                    // TODO: How to get the light component?
+                    // It seems Point Light may actually be a child entity, despite being added as a component
+//                    if let pointLight = lightSource.components[PointLight] {
+//                    }
+
+                }
+
+            }
+
         }
         .gesture(tapGesture)
         .gesture(dragGesture)
