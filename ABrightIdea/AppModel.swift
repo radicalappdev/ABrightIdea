@@ -22,7 +22,9 @@ class AppModel {
 
     var lightIntensity: Float = 1
 
+    var rootEntity: Entity?
     var shouldAddBulb: Bool = false
     var cachedPointLight: Entity?
+    var cleanEntity: Entity?
 
 }

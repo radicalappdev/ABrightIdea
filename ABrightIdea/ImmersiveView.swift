@@ -35,6 +35,7 @@ struct ImmersiveView: View {
             // Add the initial RealityKit content
             if let root = try? await Entity(named: "Immersive", in: realityKitContentBundle) {
                 content.add(root)
+                appModel.rootEntity = root
 
                 if let dome = root.findEntity(named: "Dome") {
                     dome.scale = .init(x: -1, y: 1, z: 1)
@@ -43,23 +44,40 @@ struct ImmersiveView: View {
                 if let lightBulbTemplate = root.findEntity(named: "LightBulb") {
                     lightBulbTemplate.isEnabled = false
 
+                    if let entity = lightBulbTemplate.findEntity(named: "Glass")
+                    {
+                        if var material =  entity.components[ModelComponent.self]?.materials.first as? PhysicallyBasedMaterial {
+                            material.emissiveIntensity = 0
+                            entity.components[ModelComponent.self]?.materials[0] = material
+                        }
+                    }
+
                     // Create the first light bulb from the template and place it directly in front of the player
                     let newLightBulb = lightBulbTemplate.clone(recursive: true)
                     newLightBulb.isEnabled = true
+                    newLightBulb.name = UUID().uuidString
                     newLightBulb.position = SIMD3(x: 0, y: 1, z: -1)
                     content.add(newLightBulb)
+
+                    if let entity = newLightBulb.findEntity(named: "Glass")
+                    {
+                        if var material =  entity.components[ModelComponent.self]?.materials.first as? PhysicallyBasedMaterial {
+                            material.emissiveIntensity = 10
+                            entity.components[ModelComponent.self]?.materials[0] = material
+                        }
+                    }
 
                     if appModel.cachedPointLight == nil, let pointLight = root.findEntity(named: "SelectedPointLight") {
                         print("LIGHT Loaded in scene: \(pointLight)")
                         appModel.cachedPointLight = pointLight
-                        
+
                         newLightBulb.addChild(pointLight)
                         pointLight.setPosition([0,0.088,0], relativeTo: newLightBulb)
                     }
                 }
             }
         } update: { content in
-            if let root = content.entities.first {
+            if let root = appModel.rootEntity {
                 if let lightBulbTemplate = root.findEntity(named: "LightBulb") {
 
                     if appModel.shouldAddBulb {
@@ -76,11 +94,28 @@ struct ImmersiveView: View {
                         content.add(newLightBulb)
                         print("LIGHT Added: \(newLightBulb)")
 
+                        if let entity = newLightBulb.findEntity(named: "Glass")
+                        {
+                            if var material =  entity.components[ModelComponent.self]?.materials.first as? PhysicallyBasedMaterial {
+                                material.emissiveIntensity = 10
+                                entity.components[ModelComponent.self]?.materials[0] = material
+                            }
+                        }
+
                         if let pointLight = appModel.cachedPointLight {
-                            print("LIGHT Point: \(pointLight)") // THIS IS STILL NOT RUNNING
                             pointLight.parent?.removeChild(pointLight)
                             newLightBulb.addChild(pointLight)
                             pointLight.setPosition([0,0.088,0], relativeTo: newLightBulb)
+                        }
+                    }
+                }
+
+                if let cleanUp = appModel.cleanEntity {
+                    if let entity = cleanUp.findEntity(named: "Glass")
+                    {
+                        if var material =  entity.components[ModelComponent.self]?.materials.first as? PhysicallyBasedMaterial {
+                            material.emissiveIntensity = 0
+                            entity.components[ModelComponent.self]?.materials[0] = material
                         }
                     }
                 }
@@ -96,16 +131,7 @@ struct ImmersiveView: View {
         SpatialTapGesture()
             .targetedToAnyEntity()
             .onEnded { value in
-//                let selected = value.entity.name
-                if(lightType == .dim) {
-                    lightType = .regular
-                } else if (lightType == .regular) {
-                    lightType = .bright
-                } else if (lightType == .bright) {
-                    lightType = .dim
-                }
-                print("TAP GESTURE: \(lightType)")
-
+                appModel.cleanEntity = value.entity
                 appModel.shouldAddBulb = true
             }
     }
