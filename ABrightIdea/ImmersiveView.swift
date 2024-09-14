@@ -26,6 +26,8 @@ struct ImmersiveView: View {
 
     @State var lightType: LightType = .regular
 
+    @State private var entityTransformAtStartOfGesture: Transform?
+
     var body: some View {
         RealityView { content in
             // Add the initial RealityKit content
@@ -63,25 +65,41 @@ struct ImmersiveView: View {
             if let root = content.entities.first {
                 if let lightSource = root.findEntity(named: "LightBulb") {
 
+                    // scale the light source based on appModel.lightIntensity
+//                    let minScale: Float = 0.5
+//                    let maxScale: Float = 5
+//                    let scaler: Float = minScale + (maxScale - minScale) * appModel.lightIntensity
+//                    print("LIGHT Scale: \(scaler)")
+//                    lightSource.scale = .init(x: scaler, y: scaler, z: scaler)
+
+//                    let scaler = Float(appModel.lightIntensity) * 1
+//                    let minScale: Float = 0.5
+//                    let maxScale: Float = 10.5
+//                    let scaled = min(Float(max(Float(scaler), minScale)), maxScale) / 10
+//                    lightSource.scale = .init(x: scaled, y: scaled, z: scaled)
+
+//                    let scaled = appModel.lightIntensity
+//                    lightSource.scale = .init(x: scaled, y: scaled, z: scaled)
+
                     if let lightSource = lightSource.findEntity(named: "LightSource") {
                         if var pointLight = lightSource.components[PointLightComponent.self] {
                             pointLight.intensity = appModel.lightIntensity * 26963.76
                             print("LIGHT Intensity: \(pointLight.intensity)")
                             lightSource.components.set(pointLight)
 
-//                            if let entity = root.findEntity(named: "Glass")
-//                            {
-//                                print("LIGHT found ")
-//                                if var material =  entity.components[ModelComponent.self]?.materials.first as? PhysicallyBasedMaterial {
-//
-//                                    material.emissiveIntensity = 50
-//
-//                                    print("LIGHT Intensity \(material.emissiveIntensity)")
-//
-//                                    entity.components[ModelComponent.self]?.materials[0] = material
-//                                }
-//
-//                            }
+                            if let entity = root.findEntity(named: "Glass")
+                            {
+                                print("LIGHT found ")
+                                if var material =  entity.components[ModelComponent.self]?.materials.first as? PhysicallyBasedMaterial {
+
+                                    material.emissiveIntensity = 1 * pointLight.intensity
+
+                                    print("LIGHT Intensity \(material.emissiveIntensity)")
+
+                                    entity.components[ModelComponent.self]?.materials[0] = material
+                                }
+
+                            }
                         }
 
                     }
@@ -92,6 +110,7 @@ struct ImmersiveView: View {
         }
         .gesture(tapGesture)
         .gesture(dragGesture)
+        .gesture(scaleGesture)
     }
 
     var tapGesture: some Gesture {
@@ -127,6 +146,37 @@ struct ImmersiveView: View {
                 // TODO: Save the item position
             }
     }
+
+    var scaleGesture: some Gesture {
+        MagnifyGesture()
+            .targetedToAnyEntity()
+            .onChanged { value in
+
+                let magnification: Float = Float(value.magnification)
+                print("SCALE GESTURE: \(magnification)")
+
+                if entityTransformAtStartOfGesture == nil {
+                    entityTransformAtStartOfGesture = value.entity.transform
+                }
+
+                if let initialScale = entityTransformAtStartOfGesture?.scale.x  {
+                    let scaler = Float(magnification) * initialScale
+                    let minScale: Float = 0.5
+                    let maxScale: Float = 10.5
+                    let scaled = min(Float(max(Float(scaler), minScale)), maxScale)
+                    let newScale = SIMD3(x: scaled, y: scaled, z: scaled)
+                    value.entity.setScale(newScale, relativeTo: value.entity.parent!)
+
+                }
+
+            }
+            .onEnded { value in
+                // TODO: Save the item scale
+
+                entityTransformAtStartOfGesture = nil
+            }
+    }
+
 }
 
 #Preview(immersionStyle: .full) {
