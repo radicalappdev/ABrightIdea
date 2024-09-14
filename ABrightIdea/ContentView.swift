@@ -13,8 +13,6 @@ struct ContentView: View {
 
     @Environment(AppModel.self) private var appModel
 
-    @State var tempLights: Double = 5
-
     var body: some View {
         VStack {
 
@@ -24,21 +22,8 @@ struct ContentView: View {
 
             ToggleImmersiveSpaceButton()
 
-            Slider(value: $tempLights,
-                  in: 5...25,
-                  step: 1,
-                  minimumValueLabel: Text("5"),
-                  maximumValueLabel: Text("25"),
-                  label: {
-                Text("Rating")
-            }
-            )
-            .padding(EdgeInsets(top: 0, leading: 40, bottom: 0, trailing: 40))
         }
         .padding()
-        .onChange(of: tempLights) { _, newValue in
-            appModel.totalTempLights = Int(newValue)
-        }
     }
 }
 

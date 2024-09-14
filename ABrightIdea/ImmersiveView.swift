@@ -9,7 +9,7 @@ import SwiftUI
 import RealityKit
 import RealityKitContent
 
-enum LightType: CGFloat {
+enum LightType: Float {
     case dim =  13481.88
     case regular = 26963.76
     case bright = 53927.52
@@ -31,10 +31,7 @@ struct ImmersiveView: View {
                 }
 
                 if let lightSource = root.findEntity(named: "LightBulb") {
-                    print("LIGHT Factory \(appModel.totalTempLights)")
-
-                    for index in 0..<appModel.totalTempLights {
-                        print("LIGHT Factory \(index)")
+                    for _ in 0..<7 {
                         let lightSourceCopy = lightSource.clone(recursive: true)
                         let randomX = Float.random(in: -2...2)
                         let randomY = Float.random(in: 0...2)
@@ -42,22 +39,24 @@ struct ImmersiveView: View {
 
                         lightSourceCopy.position = SIMD3(x: randomX, y: randomY, z: randomZ)
 
+                        if let lightSource = lightSourceCopy.findEntity(named: "LightSource") {
+                            if var pointLight = lightSource.components[PointLightComponent.self] {
+                                pointLight.intensity = Float.random(in: 1000...53927.52)
+                                print("LIGHT Intensity: \(pointLight.intensity)")
+                                lightSource.components.set(pointLight)
+                            }
+
+                        }
+
                         content.add(lightSourceCopy)
                     }
                 }
             }
         } update: { content in
 
-            if let rootEntity = content.entities.first {
-                if let lightSource = rootEntity.findEntity(named: "LightSource") {
-//                    // TODO: How to get the light component?
-                    // It seems Point Light may actually be a child entity, despite being added as a component
-//                    if let pointLight = lightSource.components[PointLight] {
-//                    }
-
-                }
-
-            }
+//            if let rootEntity = content.entities.first {
+//                // TODO
+//            }
 
         }
         .gesture(tapGesture)

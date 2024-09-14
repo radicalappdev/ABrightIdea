@@ -19,5 +19,4 @@ class AppModel {
     }
     var immersiveSpaceState = ImmersiveSpaceState.closed
 
-    var totalTempLights: Int = 5
 }

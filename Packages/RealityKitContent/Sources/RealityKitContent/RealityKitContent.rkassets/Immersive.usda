@@ -53,15 +53,43 @@ def Xform "Root"
             }
         }
 
-        over "LightSource" (
-            active = false
-        )
+        over "LightSource"
         {
+        }
+
+        over "GlassMat"
+        {
+            color3f inputs:Basecolor_Tint = (0.999996, 1, 1) (
+                colorSpace = "srgb_texture"
+            )
+            token outputs:mtlx:surface.connect = </Root/LightBulb/GlassMat/PreviewSurface.outputs:out>
+            token outputs:surface.connect = </Root/LightBulb/GlassMat/UsdPreviewSurface_1.outputs:surface>
+
+            over "UsdPreviewSurface_1" (
+                active = true
+            )
+            {
+                color3f inputs:emissiveColor = (0.999996, 1, 1) (
+                    colorSpace = "srgb_texture"
+                )
+            }
+
+            over "PreviewSurface" (
+                active = false
+            )
+            {
+                float2 ui:nodegraph:node:pos = (520.9142, 343.2003)
+                int ui:nodegraph:node:stackingOrder = 2303
+            }
+
+            over "Mix"
+            {
+                int ui:nodegraph:node:stackingOrder = 2306
+            }
         }
     }
 
     def Sphere "Dome" (
-        active = false
         prepend apiSchemas = ["MaterialBindingAPI"]
     )
     {
