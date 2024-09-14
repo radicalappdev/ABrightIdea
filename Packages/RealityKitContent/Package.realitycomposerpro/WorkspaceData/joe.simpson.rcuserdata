@@ -2,8 +2,7 @@
   "advancedEditorSelectedIdentifier" : "BehaviorsPluginID",
   "openSceneRelativePaths" : [
     "Immersive.usda",
-    "light-bulb-rad.usdc",
-    "Scene.usda"
+    "light-bulb-rad.usdc"
   ],
   "recentIdentifiers" : {
     "01C7D29B-5C46-41E0-9F33-646C830E1A25" : [
@@ -238,6 +237,28 @@
     ],
     "AF09ED6F-1707-48FD-8720-65B998362C09" : [
       {
+        "date" : 748045106.712998,
+        "title" : "Untitled",
+        "transform" : [
+          1,
+          0,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0.39998716,
+          2.6960692,
+          11.222543,
+          1
+        ]
+      },
+      {
         "date" : 748036140.765648,
         "title" : "Untitled",
         "transform" : [
@@ -432,28 +453,6 @@
           0.15033293,
           1.3364843,
           -1.2302951,
-          1
-        ]
-      },
-      {
-        "date" : 748016835.174311,
-        "title" : "Untitled",
-        "transform" : [
-          -0.69912213,
-          2.7904392e-08,
-          -0.7150023,
-          0,
-          -0.5270288,
-          0.67578286,
-          0.5153235,
-          0,
-          0.4831863,
-          0.73710084,
-          -0.47245473,
-          0,
-          0.27228624,
-          1.1829778,
-          -1.3450648,
           1
         ]
       }

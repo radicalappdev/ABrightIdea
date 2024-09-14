@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import RealityKit
 
 /// Maintains app-wide state
 @MainActor
@@ -22,5 +23,6 @@ class AppModel {
     var lightIntensity: Float = 1
 
     var shouldAddBulb: Bool = false
+    var cachedPointLight: Entity?
 
 }

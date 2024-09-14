@@ -29,6 +29,7 @@ struct ImmersiveView: View {
     @State private var entityTransformAtStartOfGesture: Transform?
 
 
+
     var body: some View {
         RealityView { content in
             // Add the initial RealityKit content
@@ -40,29 +41,30 @@ struct ImmersiveView: View {
                 }
 
                 if let lightBulbTemplate = root.findEntity(named: "LightBulb") {
-                    // Get the RCP entity and save it as a template
                     lightBulbTemplate.isEnabled = false
 
-                    // Create the first light buld from the template and place it directly in front of the player
+                    // Create the first light bulb from the template and place it directly in front of the player
                     let newLightBulb = lightBulbTemplate.clone(recursive: true)
                     newLightBulb.isEnabled = true
-
                     newLightBulb.position = SIMD3(x: 0, y: 1, z: -1)
                     content.add(newLightBulb)
+
+                    if appModel.cachedPointLight == nil, let pointLight = root.findEntity(named: "SelectedPointLight") {
+                        print("LIGHT Loaded in scene: \(pointLight)")
+                        appModel.cachedPointLight = pointLight
+                        print("LIGHT point light entity: \(appModel.cachedPointLight)") // THIS CAN SEE THE VALUE
+                        newLightBulb.addChild(pointLight)
+                        pointLight.setPosition([0,0.088,0], relativeTo: newLightBulb)
+                    }
                 }
-
-
             }
         } update: { content in
-
             if let root = content.entities.first {
-
                 if let lightBulbTemplate = root.findEntity(named: "LightBulb") {
 
-                    if(appModel.shouldAddBulb) {
+                    if appModel.shouldAddBulb {
                         appModel.shouldAddBulb = false
 
-                        print("LIGHT Adding in Update")
                         let newLightBulb = lightBulbTemplate.clone(recursive: true)
                         newLightBulb.isEnabled = true
                         newLightBulb.name = UUID().uuidString
@@ -71,23 +73,26 @@ struct ImmersiveView: View {
                         let randomZ = Float.random(in: -2...2)
 
                         newLightBulb.position = SIMD3(x: randomX, y: randomY, z: randomZ)
-
                         content.add(newLightBulb)
                         print("LIGHT Added: \(newLightBulb)")
 
+                        print("LIGHT point light entity: \(appModel.cachedPointLight)") // BUT WHEN WE GET HERE IT IS NULL
 
+                        if let pointLight = appModel.cachedPointLight {
+                            print("LIGHT Point: \(pointLight)") // THIS IS STILL NOT RUNNING
+                            pointLight.parent?.removeChild(pointLight)
+                            newLightBulb.addChild(pointLight)
+                            pointLight.setPosition([0,0.088,0], relativeTo: newLightBulb)
+                        }
                     }
-
-
                 }
             }
-
         }
         .gesture(tapGesture)
         .gesture(dragGesture)
         .gesture(scaleGesture)
-
     }
+
 
     var tapGesture: some Gesture {
         SpatialTapGesture()

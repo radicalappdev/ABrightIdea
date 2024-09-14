@@ -7,7 +7,7 @@
 
 def Xform "Root"
 {
-    reorder nameChildren = ["GridMaterial", "LightBulb", "Dome", "Floor", "FloorMat", "DomeMat", "Particles"]
+    reorder nameChildren = ["SelectedPointLight", "GridMaterial", "LightBulb", "Dome", "Floor", "FloorMat", "DomeMat"]
     def "GridMaterial" (
         active = true
         references = @Materials/GridMaterial.usda@
@@ -145,6 +145,14 @@ def Xform "Root"
     )
     {
         float2 inputs:UV_Scale = (10, 10)
+    }
+
+    def Xform "SelectedPointLight"
+    {
+        def RealityKitComponent "PointLight"
+        {
+            token info:id = "RealityKit.PointLight"
+        }
     }
 }
 
