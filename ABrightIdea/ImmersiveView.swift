@@ -58,6 +58,7 @@ struct ImmersiveView: View {
                     newLightBulb.name = UUID().uuidString
                     newLightBulb.position = SIMD3(x: 0, y: 1, z: -1)
                     content.add(newLightBulb)
+                    appModel.selectedEntity = newLightBulb
 
                     if let entity = newLightBulb.findEntity(named: "Glass")
                     {
@@ -78,7 +79,9 @@ struct ImmersiveView: View {
             }
         } update: { content in
             if let root = appModel.rootEntity {
+
                 if let lightBulbTemplate = root.findEntity(named: "LightBulb") {
+
 
                     if appModel.shouldAddBulb {
                         appModel.shouldAddBulb = false
@@ -92,6 +95,7 @@ struct ImmersiveView: View {
 
                         newLightBulb.position = SIMD3(x: randomX, y: randomY, z: randomZ)
                         content.add(newLightBulb)
+                        appModel.selectedEntity = newLightBulb
                         print("LIGHT Added: \(newLightBulb)")
 
                         if let entity = newLightBulb.findEntity(named: "Glass")
@@ -131,8 +135,10 @@ struct ImmersiveView: View {
         SpatialTapGesture()
             .targetedToAnyEntity()
             .onEnded { value in
-                appModel.cleanEntity = value.entity
-                appModel.shouldAddBulb = true
+                if(appModel.selectedEntity?.name == value.entity.name) {
+                    appModel.cleanEntity = value.entity
+                    appModel.shouldAddBulb = true
+                } 
             }
     }
 

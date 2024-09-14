@@ -26,5 +26,6 @@ class AppModel {
     var shouldAddBulb: Bool = false
     var cachedPointLight: Entity?
     var cleanEntity: Entity?
+    var selectedEntity: Entity?
 
 }
