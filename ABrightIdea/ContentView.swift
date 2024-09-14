@@ -13,6 +13,8 @@ struct ContentView: View {
 
     @Environment(AppModel.self) private var appModel
 
+    @State var tempLightValue: Double = 1
+
     var body: some View {
         VStack {
 
@@ -22,8 +24,21 @@ struct ContentView: View {
 
             ToggleImmersiveSpaceButton()
 
+            Slider(value: $tempLightValue,
+                   in: 0...10,
+                   minimumValueLabel: Text("Dim"),
+                   maximumValueLabel: Text("Bight"),
+                   label: {
+                        Text("Light")
+                   }
+            )
+
+
         }
         .padding()
+        .onChange(of: tempLightValue) { _, newValue in
+            appModel.lightIntensity = Float(newValue * 26963.76)
+        }
     }
 }
 
