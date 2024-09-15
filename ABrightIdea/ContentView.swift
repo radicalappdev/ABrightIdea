@@ -23,15 +23,7 @@ struct ContentView: View {
                 .font(.extraLargeTitle2)
 
             ToggleImmersiveSpaceButton()
-
-            Slider(value: $tempLightValue,
-                   in: 0.5...10.5,
-                   minimumValueLabel: Text("Dim"),
-                   maximumValueLabel: Text("Bight"),
-                   label: {
-                        Text("Light")
-                   }
-            )
+                .padding()
 
 
         }

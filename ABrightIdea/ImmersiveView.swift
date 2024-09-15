@@ -35,6 +35,9 @@ struct ImmersiveView: View {
                     dome.scale = .init(x: -1, y: 1, z: 1)
                 }
 
+                let exitSign = makeTextEntity(textValue: "EXIT")
+                exitSign.position = .init(x: 0, y: 2, z: -3)
+                root.addChild(exitSign)
 
 
                 if let lightBulbTemplate = root.findEntity(named: "LightBulb") {
@@ -198,13 +201,10 @@ struct ImmersiveView: View {
                 if(appModel.selectedEntity?.name == value.entity.name) {
                     appModel.cleanEntity = value.entity
                     appModel.shouldAddBulb = true
-                    // wait 0.25 seconds before triggering sound
-//                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-//                        appModel.shouldAddBulb = true
-//                    }
                 }
             }
     }
+
 
     var dragGesture: some Gesture {
         DragGesture()
@@ -242,6 +242,46 @@ struct ImmersiveView: View {
             .onEnded { value in
                 // Optional: Add any behavior for when the drag gesture ends
             }
+    }
+
+    @MainActor private let faceMaterial: PhysicallyBasedMaterial = {
+        var faceMaterial = PhysicallyBasedMaterial()
+        faceMaterial.metallic = .init(floatLiteral: 1)
+        faceMaterial.baseColor = .init(tint: #colorLiteral(red: 0.9254902005, green: 0.2352941185, blue: 0.1019607857, alpha: 1))
+        faceMaterial.emissiveIntensity = .init(floatLiteral: 10)
+        return faceMaterial
+    }()
+
+    @MainActor private let borderMaterial: PhysicallyBasedMaterial = {
+        var borderMaterial = PhysicallyBasedMaterial()
+        borderMaterial.metallic = .init(floatLiteral: 0.15)
+        borderMaterial.roughness = .init(floatLiteral: 0.85)
+        borderMaterial.baseColor = .init(tint: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1))
+        return borderMaterial
+    }()
+
+    private func makeTextEntity(textValue: String) -> ModelEntity {
+
+        var textString = AttributedString(textValue)
+        textString.font = .systemFont(ofSize: 8.0, weight: .black)
+
+        let paragraphStyle = NSMutableParagraphStyle()
+        paragraphStyle.alignment = .center
+        textString.mergeAttributes(AttributeContainer([.paragraphStyle: paragraphStyle]))
+
+        var textOptions = MeshResource.GenerateTextOptions()
+        textOptions.containerFrame = CGRect(x: 0, y: 0, width: 100, height: 50)
+
+        var extrusionOptions = MeshResource.ShapeExtrusionOptions()
+        extrusionOptions.extrusionMethod = .linear(depth: 1)
+        extrusionOptions.materialAssignment = .init(front: 0, back: 0, extrusion: 1, frontChamfer: 1, backChamfer: 1)
+        extrusionOptions.chamferRadius = 0.1
+
+        let textMesh = try! MeshResource(extruding: textString,
+                                         textOptions: textOptions,
+                                         extrusionOptions: extrusionOptions)
+
+        return ModelEntity(mesh: textMesh, materials: [faceMaterial, borderMaterial])
     }
 
 }
