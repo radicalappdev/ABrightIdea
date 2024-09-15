@@ -48,6 +48,14 @@ struct ImmersiveView: View {
                         }
                     }
 
+                    if let base = lightBulbTemplate.findEntity(named: "Base")
+                    {
+                        if var material =  base.components[ModelComponent.self]?.materials.first as? PhysicallyBasedMaterial {
+                            material.emissiveIntensity = 0
+                            base.components[ModelComponent.self]?.materials[0] = material
+                        }
+                    }
+
                     // Create the first light bulb from the template and place it directly in front of the player
                     let newLightBulb = lightBulbTemplate.clone(recursive: true)
                     newLightBulb.isEnabled = true
@@ -61,6 +69,14 @@ struct ImmersiveView: View {
                         if var material =  entity.components[ModelComponent.self]?.materials.first as? PhysicallyBasedMaterial {
                             material.emissiveIntensity = 10
                             entity.components[ModelComponent.self]?.materials[0] = material
+                        }
+                    }
+
+                    if let base = newLightBulb.findEntity(named: "Base")
+                    {
+                        if var material =  base.components[ModelComponent.self]?.materials.first as? PhysicallyBasedMaterial {
+                            material.emissiveIntensity = 1
+                            base.components[ModelComponent.self]?.materials[0] = material
                         }
                     }
 
@@ -119,7 +135,14 @@ struct ImmersiveView: View {
                                     entity.components[ModelComponent.self]?.materials[0] = material
                                 }
                             }
-                            
+
+                            if let base = newLightBulb.findEntity(named: "Base") {
+                                if var material = base.components[ModelComponent.self]?.materials.first as? PhysicallyBasedMaterial {
+                                    material.emissiveIntensity = 1
+                                    base.components[ModelComponent.self]?.materials[0] = material
+                                }
+                            }
+
                             if let pointLight = appModel.cachedPointLight {
                                 pointLight.parent?.removeChild(pointLight)
                                 pointLight.isEnabled = true
