@@ -279,12 +279,6 @@ def Xform "Root"
         }
     }
 
-    def RealityKitAudioFile "impactGlass_heavy_000_mp3"
-    {
-        uniform asset file = @Sounds/impactGlass_heavy_000.mp3@
-        uniform bool shouldLoop = 0
-    }
-
     def RealityKitAudioFile "switch4_mp3"
     {
         uniform asset file = @Sounds/switch4.mp3@
