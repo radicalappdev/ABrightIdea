@@ -2,6 +2,8 @@
 
 My submission for Vision Hack 2024.
 
+[Watch the demo video](https://youtu.be/SGqOGoe1InM)
+
 I thought I had something—a bright idea.
 
 ![idea](idea-01.png)
@@ -42,12 +44,7 @@ But I kept working, and I ended up here.
 
 A Bright Idea and all the failures along the way.
 
-
-<div align="left">
-      <a href="https://youtu.be/SGqOGoe1InM">
-         <img src="idea-02.png" style="width:100%;">
-      </a>
-</div>
+[Watch the demo video](https://youtu.be/SGqOGoe1InM)
 
 ---
 
