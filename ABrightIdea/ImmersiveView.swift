@@ -121,17 +121,20 @@ struct ImmersiveView: View {
                             entity.components[ModelComponent.self]?.materials[0] = material
                         }
 
-                        // slowly rotate the entity onto it's side
-//                        cleanUp.setOrientation(simd_quatf(angle: 3, axis: SIMD3(1, 0, 1)), relativeTo: root)
+                        // Force it to rotate onto one side
+                        let rotationX = simd_quatf(angle: -.pi * 84 / 180, axis: SIMD3(1, 0, 0))
+                        // Then apply a random rotation so they don't all face the same way
+                        let randomYRotation = Float.random(in: 0...2 * .pi)
+                        let rotationY = simd_quatf(angle: randomYRotation, axis: SIMD3(0, 1, 0))
 
-                        // Add physics body component to make it fall to the ground
-                        let physicsBody = PhysicsBodyComponent(massProperties: .default,
-                                                               material: nil,
-                                                               mode: .dynamic)
-                        cleanUp.components.set(physicsBody)
+                        let combinedRotation = rotationY * rotationX
+                        cleanUp.setOrientation(combinedRotation, relativeTo: root)
 
+                        // Physics sucks on RealityKit (mainly colliders) so just shove it onto the ground.
+                        cleanUp.setPosition(SIMD3(x: cleanUp.position.x, y: 0.088, z: cleanUp.position.z), relativeTo: root)
                     }
                 }
+
 
             }
         }
