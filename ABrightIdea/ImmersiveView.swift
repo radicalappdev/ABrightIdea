@@ -85,7 +85,7 @@ struct ImmersiveView: View {
                         newLightBulb.isEnabled = true
                         newLightBulb.name = UUID().uuidString
 
-                        let radius: Float = 1.4
+                        let radius: Float = 3.4
                         let floorHeight: Float = 0.75
 
                         // Generate a random position within the allowed range
@@ -109,25 +109,40 @@ struct ImmersiveView: View {
 
                         content.add(newLightBulb)
                         appModel.selectedEntity = newLightBulb
-                        print("LIGHT Added: \(newLightBulb)")
 
-                        if let entity = newLightBulb.findEntity(named: "Glass")
-                        {
-                            if var material =  entity.components[ModelComponent.self]?.materials.first as? PhysicallyBasedMaterial {
-                                material.emissiveIntensity = 10
-                                entity.components[ModelComponent.self]?.materials[0] = material
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+
+                            if let entity = newLightBulb.findEntity(named: "Glass")
+                            {
+                                if var material =  entity.components[ModelComponent.self]?.materials.first as? PhysicallyBasedMaterial {
+                                    material.emissiveIntensity = 10
+                                    entity.components[ModelComponent.self]?.materials[0] = material
+                                }
+                            }
+                            
+                            if let pointLight = appModel.cachedPointLight {
+                                pointLight.parent?.removeChild(pointLight)
+                                pointLight.isEnabled = true
+                                newLightBulb.addChild(pointLight)
+                                pointLight.setPosition([0,0.088,0], relativeTo: newLightBulb)
+                                if let library = pointLight.components[AudioLibraryComponent.self] {
+                                    if (pointLight.components[AudioLibraryComponent.self]?.resources.first) != nil {
+                                        pointLight.playAudio(library.resources["switch1.mp3"]!)
+                                    }
+                                }
+                                
                             }
                         }
 
-                        if let pointLight = appModel.cachedPointLight {
-                            pointLight.parent?.removeChild(pointLight)
-                            newLightBulb.addChild(pointLight)
-                            pointLight.setPosition([0,0.088,0], relativeTo: newLightBulb)
-                        }
                     }
                 }
 
                 if let cleanUp = appModel.cleanEntity {
+
+                    if let pointLight = appModel.cachedPointLight {
+                        pointLight.isEnabled = false
+                    }
+
                     if let glass = cleanUp.findEntity(named: "Glass") {
                         if var material = glass.components[ModelComponent.self]?.materials.first as? PhysicallyBasedMaterial {
                             material.emissiveIntensity = 0
@@ -161,12 +176,14 @@ struct ImmersiveView: View {
                                  relativeTo: root,
                                  duration: 0.25)
 
+                    // Play switch off sound
                     if let library = cleanUp.components[AudioLibraryComponent.self] {
-                        if let audioFile =  cleanUp.components[AudioLibraryComponent.self]?.resources.first {
-                            cleanUp.playAudio(library.resources["impactGlass_heavy_000.mp3"]!)
+                        if (cleanUp.components[AudioLibraryComponent.self]?.resources.first) != nil {
+                            cleanUp.playAudio(library.resources["switch4.mp3"]!)
                         }
                     }
-                    
+
+
                 }
             }
         }
@@ -181,6 +198,10 @@ struct ImmersiveView: View {
                 if(appModel.selectedEntity?.name == value.entity.name) {
                     appModel.cleanEntity = value.entity
                     appModel.shouldAddBulb = true
+                    // wait 0.25 seconds before triggering sound
+//                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+//                        appModel.shouldAddBulb = true
+//                    }
                 }
             }
     }

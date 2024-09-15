@@ -131,8 +131,8 @@ def Xform "Root"
 
             def RealityKitDict "resources"
             {
-                string[] keys = ["impactGlass_heavy_000.mp3"]
-                rel values = </Root/impactGlass_heavy_000_mp3>
+                string[] keys = ["switch4.mp3"]
+                rel values = </Root/switch4_mp3>
             }
         }
     }
@@ -249,6 +249,22 @@ def Xform "Root"
         {
             token info:id = "RealityKit.PointLight"
         }
+
+        def RealityKitComponent "AudioLibrary"
+        {
+            uniform token info:id = "RealityKit.AudioLibrary"
+
+            def RealityKitDict "resources"
+            {
+                string[] keys = ["switch1.mp3"]
+                rel values = </Root/switch1_mp3>
+            }
+        }
+
+        def RealityKitComponent "SpatialAudio"
+        {
+            uniform token info:id = "RealityKit.SpatialAudio"
+        }
     }
 
     def Xform "ImageBasedLight" (
@@ -266,6 +282,18 @@ def Xform "Root"
     def RealityKitAudioFile "impactGlass_heavy_000_mp3"
     {
         uniform asset file = @Sounds/impactGlass_heavy_000.mp3@
+        uniform bool shouldLoop = 0
+    }
+
+    def RealityKitAudioFile "switch4_mp3"
+    {
+        uniform asset file = @Sounds/switch4.mp3@
+        uniform bool shouldLoop = 0
+    }
+
+    def RealityKitAudioFile "switch1_mp3"
+    {
+        uniform asset file = @Sounds/switch1.mp3@
         uniform bool shouldLoop = 0
     }
 }

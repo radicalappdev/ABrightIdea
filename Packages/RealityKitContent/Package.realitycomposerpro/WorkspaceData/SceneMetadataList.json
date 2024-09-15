@@ -100,13 +100,25 @@
       [
         "AF09ED6F-1707-48FD-8720-65B998362C09",
         "Root",
+        "SelectedPointLight"
+      ],
+      {
+        "isExpanded" : false,
+        "isLocked" : false,
+        "selectedAudioFilePrim" : {
+          "string" : "\/Root\/switch1_mp3"
+        }
+      },
+      [
+        "AF09ED6F-1707-48FD-8720-65B998362C09",
+        "Root",
         "LightBulb"
       ],
       {
         "isExpanded" : true,
         "isLocked" : false,
         "selectedAudioFilePrim" : {
-          "string" : "\/Root\/impactGlass_heavy_000_mp3"
+          "string" : "\/Root\/switch4_mp3"
         }
       },
       [
