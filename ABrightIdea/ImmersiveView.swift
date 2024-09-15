@@ -36,6 +36,30 @@ struct ImmersiveView: View {
                 }
 
                 let exitSign = makeTextEntity(textValue: "EXIT")
+                exitSign.name = "ExitSign"
+
+                // Add an input and colliders
+                exitSign.components.set(InputTargetComponent())
+//                // Define a shape for the collision (e.g., a box that surrounds the text)
+//                let collisionShape = ShapeResource.generateBox(size: [2.0, 1, 1])
+//
+//                // Add a CollisionComponent with the generated shape
+//                exitSign.components.set(CollisionComponent(shapes: [collisionShape]))
+
+                // Define a box shape that approximately fits the size of the text
+                let boxWidth: Float = 2.0  // Adjust based on the width of your text
+                let boxHeight: Float = 1.0  // Adjust based on the height of your text
+                let boxDepth: Float = 1.0   // Adjust based on the extrusion depth of your text
+
+                // Create a box-shaped collision
+                let collisionShape = ShapeResource.generateBox(size: [boxWidth, boxHeight, boxDepth])
+                exitSign.components.set(CollisionComponent(shapes: [collisionShape]))
+
+
+                // add a hover effect
+                let hoverEffect = HoverEffectComponent()
+                exitSign.components.set(hoverEffect)
+
                 exitSign.position = .init(x: 0, y: 2, z: -3)
                 root.addChild(exitSign)
 
@@ -198,6 +222,11 @@ struct ImmersiveView: View {
         SpatialTapGesture()
             .targetedToAnyEntity()
             .onEnded { value in
+
+                if(value.entity.name == "ExitSign") {
+                    print("exit sign")
+                    return
+                }
                 if(appModel.selectedEntity?.name == value.entity.name) {
                     appModel.cleanEntity = value.entity
                     appModel.shouldAddBulb = true
