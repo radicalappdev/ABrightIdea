@@ -1,39 +1,47 @@
 # A Bright Idea
 
-My entry for Vision Hack 2024.
+My submission for Vision Hack 2024.
 
-I thought I had a bright idea.
+I thought I had something—a bright idea.
 
 ![idea](idea-01.png)
 
-I set out to create a small app to organize your ideas in an immersive space. Each idea could be represented by scale and brightness. I created a simple light bulb mesh and started the prototype with a point light.
+The plan was to build a small app to help organize thoughts in an immersive space, with each idea represented by its scale and brightness. I created a simple light bulb mesh and began prototyping with a point light.
 
 ![idea](idea-02.png)
 
-I ran face first into my first issue.
+That’s when I hit my first wall.
 
 > A RealityKit scene can contain up to eight dynamic lights
 
 Apple Documentation for [PointLight](https://developer.apple.com/documentation/realitykit/pointlight)
 
-I don't know about you, but I have a lot more than eight ideas that I want to keep track of...
+I don't know about you, but I have more than eight ideas, and all of them worth keeping.
 
-
-
-So I started thinking about workarounds. How about emissive materials?
+I looked for alternatives. How about emissive materials?
 
 > You can set this property to values greater than 1.0.
 
 Apple Documentation for [emissiveIntensity](https://developer.apple.com/documentation/realitykit/physicallybasedmaterial/emissiveintensity)
 
-I tried that, but it didn't pan out. I could not perceive a difference between 1.0, 10, 100, or even 1,000!
+I gave it a try, but no matter how high I set the value—1.0, 10, 100, or even 1,000—nothing changed visually in my dark scene.
 
 
 
-I couldn't use Point Lights because of the limited number per scene and emissive materials didn't showcase the difference in ideas that I wanted. My idea came crashing down.
-
-Which gave me another idea...
+Point lights wouldn’t work, and emissive materials didn’t capture the distinction between ideas as I hoped. My idea came crashing down.
 
 ![idea](idea-03.png)
 
- What if I set aside my original idea and embrace this failure instead? I kept working. I kept reaching for idea after idea and they kept crashing down. I kept at it until I arrived at this.
+And that gave me a new idea! What if I set aside the original plan and embraced failure instead? 
+
+I kept reaching for idea after idea and they kept crashing down.
+
+But I kept working, and I ended up here.
+
+![idea](idea-04.png)
+
+A Bright Idea and all the failures along the way.
+
+---
+
+Joseph, September 15, 2024
