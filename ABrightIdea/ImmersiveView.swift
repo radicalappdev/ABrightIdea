@@ -131,7 +131,14 @@ struct ImmersiveView: View {
                         cleanUp.setOrientation(combinedRotation, relativeTo: root)
 
                         // Physics sucks on RealityKit (mainly colliders) so just shove it onto the ground.
-                        cleanUp.setPosition(SIMD3(x: cleanUp.position.x, y: 0.088, z: cleanUp.position.z), relativeTo: root)
+
+                        // Target position on the ground
+                        let targetPosition = SIMD3(x: cleanUp.position.x, y: 0.088, z: cleanUp.position.z)
+
+                        // Animate rotation and position
+                        cleanUp.move(to: Transform(scale: cleanUp.scale, rotation: combinedRotation, translation: targetPosition),
+                                     relativeTo: root,
+                                     duration: 0.25)
                     }
                 }
 
