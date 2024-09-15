@@ -91,6 +91,15 @@
     "objectMetadataList" : [
       [
         "AF09ED6F-1707-48FD-8720-65B998362C09",
+        "Root",
+        "LightBulb"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "AF09ED6F-1707-48FD-8720-65B998362C09",
         "Root"
       ],
       {

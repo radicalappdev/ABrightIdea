@@ -121,6 +121,9 @@ struct ImmersiveView: View {
                             entity.components[ModelComponent.self]?.materials[0] = material
                         }
 
+                        // slowly rotate the entity onto it's side
+//                        cleanUp.setOrientation(simd_quatf(angle: 3, axis: SIMD3(1, 0, 1)), relativeTo: root)
+
                         // Add physics body component to make it fall to the ground
                         let physicsBody = PhysicsBodyComponent(massProperties: .default,
                                                                material: nil,
