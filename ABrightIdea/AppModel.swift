@@ -19,6 +19,7 @@ class AppModel {
         case open
     }
     var immersiveSpaceState = ImmersiveSpaceState.closed
+    var mainWindowOpen: Bool = true
 
     var lightIntensity: Float = 1
 

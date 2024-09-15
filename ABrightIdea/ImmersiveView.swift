@@ -17,12 +17,14 @@ enum LightType: Float {
 
 struct ImmersiveView: View {
     @Environment(AppModel.self) private var appModel
+    @Environment(\.scenePhase) private var scenePhase
+    @Environment(\.openWindow) private var openWindow
+    @Environment(\.dismissWindow) private var dismissWindow
+    @Environment(\.dismissImmersiveSpace) private var dismissImmersiveSpace
 
     @State var lightType: LightType = .regular
 
     @State private var entityTransformAtStartOfGesture: Transform?
-
-
 
     var body: some View {
         RealityView { content in
@@ -180,13 +182,22 @@ struct ImmersiveView: View {
                             cleanUp.playAudio(library.resources["switch4.mp3"]!)
                         }
                     }
-
-
                 }
             }
         }
         .gesture(tapGesture)
         .gesture(dragGesture)
+        .preferredSurroundingsEffect(.ultraDark)
+        .onChange(of: scenePhase, initial: true) {
+            switch scenePhase {
+            case .inactive, .background:
+                return
+            case .active:
+                dismissWindow(id: "MainWindow")
+            @unknown default:
+                return
+            }
+        }
     }
 
     var tapGesture: some Gesture {
@@ -198,6 +209,10 @@ struct ImmersiveView: View {
                     appModel.exitCount += 1
                     if appModel.exitCount >= 3 {
                         print("exit time")
+                        Task { @MainActor in
+                            openWindow(id: "MainWindow")
+                            await dismissImmersiveSpace()
+                        }
                     }
                     return
                 } else {

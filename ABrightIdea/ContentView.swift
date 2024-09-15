@@ -12,8 +12,8 @@ import RealityKitContent
 struct ContentView: View {
 
     @Environment(AppModel.self) private var appModel
+    @Environment(\.scenePhase) private var scenePhase
 
-    @State var tempLightValue: Double = 1
 
     var body: some View {
         VStack {
@@ -26,10 +26,22 @@ struct ContentView: View {
                 .padding()
 
 
+            Text("Exit the space by tapping the floor three times.")
+                .font(.caption)
+
+
         }
         .padding()
-        .onChange(of: tempLightValue) { _, newValue in
-            appModel.lightIntensity = Float(newValue)
+        .onChange(of: scenePhase, initial: true) {
+            switch scenePhase {
+            case .inactive, .background:
+                appModel.mainWindowOpen = false
+            case .active:
+                appModel.mainWindowOpen = true
+                appModel.exitCount = 0
+            @unknown default:
+                appModel.mainWindowOpen = false
+            }
         }
     }
 }
