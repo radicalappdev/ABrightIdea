@@ -1,8 +1,12 @@
 # A Bright Idea
 
-My submission for Vision Hack 2024.
+My submission for [Vision Hack](https://www.visionoshackathon.com) 2024.
 
 [Watch the demo video](https://youtu.be/SGqOGoe1InM)
+
+---
+
+### A Bright Idea
 
 I thought I had something—a bright idea.
 
@@ -44,8 +48,17 @@ But I kept working, and I ended up here.
 
 A Bright Idea and all the failures along the way.
 
-[Watch the demo video](https://youtu.be/SGqOGoe1InM)
 
 ---
 
 Joseph, September 15, 2024
+
+[Watch the demo video](https://youtu.be/SGqOGoe1InM)
+
+---
+
+### Credits
+* Code by Joseph Simpson (and ChatGPT to help)
+* Light Bulb Model - Joseph Simpson
+* Sound Effects - [Kenney Assets](https://kenney.nl)
+* Melancholy - RealityKit with special guest Reality Composer Pro
