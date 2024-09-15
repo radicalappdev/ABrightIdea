@@ -9,12 +9,6 @@ import SwiftUI
 import RealityKit
 import RealityKitContent
 
-//enum LightType: Float {
-//    case dim =  520
-//    case regular = 1600
-//    case bright = 3200
-//}
-
 enum LightType: Float {
     case dim =  6740.94
     case regular = 26963.76
@@ -81,7 +75,6 @@ struct ImmersiveView: View {
             if let root = appModel.rootEntity {
 
                 if let lightBulbTemplate = root.findEntity(named: "LightBulb") {
-
 
                     if appModel.shouldAddBulb {
                         appModel.shouldAddBulb = false
