@@ -90,7 +90,7 @@ struct ImmersiveView: View {
                         newLightBulb.isEnabled = true
                         newLightBulb.name = UUID().uuidString
                         let randomX = Float.random(in: -2...2)
-                        let randomY = Float.random(in: 0...2)
+                        let randomY = Float.random(in: 0.75...2)
                         let randomZ = Float.random(in: -2...2)
 
                         newLightBulb.position = SIMD3(x: randomX, y: randomY, z: randomZ)
@@ -147,9 +147,7 @@ struct ImmersiveView: View {
         }
         .gesture(tapGesture)
         .gesture(dragGesture)
-//        .gesture(scaleGesture)
     }
-
 
     var tapGesture: some Gesture {
         SpatialTapGesture()
@@ -166,50 +164,32 @@ struct ImmersiveView: View {
         DragGesture()
             .targetedToAnyEntity()
             .onChanged { value in
+                let radius: Float = 4
+                let floorHeight: Float = 0.1
 
-                let newPostion = value.convert(value.location3D, from: .local, to: value.entity.parent!)
+                // Convert the drag location to the entity's parent's coordinate space
+                let newPosition = value.convert(value.location3D, from: .local, to: value.entity.parent!)
 
-                let limit: Float = 2
-                value.entity.position.x = min(max(newPostion.x, -limit), limit)
-                value.entity.position.y = min(max(newPostion.y, 0.1), limit)
-                value.entity.position.z = min(max(newPostion.z, -limit), limit)
+                // Ensure the y position doesn't go below the floor
+                let clampedY = max(newPosition.y, floorHeight)
 
-            }
-            .onEnded { value in
-                // TODO: Save the item position
-            }
-    }
+                // Calculate the distance from the origin
+                var clampedPosition = SIMD3<Float>(newPosition.x, clampedY, newPosition.z)
 
-    var scaleGesture: some Gesture {
-        MagnifyGesture()
-            .targetedToAnyEntity()
-            .onChanged { value in
-
-                let magnification: Float = Float(value.magnification)
-//                print("SCALE GESTURE: \(magnification)")
-
-                if entityTransformAtStartOfGesture == nil {
-                    entityTransformAtStartOfGesture = value.entity.transform
+                // Check if the position exceeds the sphere's radius
+                let distanceFromCenter = length(clampedPosition)
+                if distanceFromCenter > radius {
+                    // Normalize the position and scale it to be on the sphere's surface
+                    clampedPosition = normalize(clampedPosition) * radius
+                    // Ensure the clamped Y value stays above the floor after normalization
+                    clampedPosition.y = max(clampedPosition.y, floorHeight)
                 }
 
-                if let initialScale = entityTransformAtStartOfGesture?.scale.x  {
-                    let scaler = Float(magnification) * initialScale
-                    let minScale: Float = 0.5
-                    let maxScale: Float = 10.5
-                    let scaled = min(Float(max(Float(scaler), minScale)), maxScale)
-                    let newScale = SIMD3(x: scaled, y: scaled, z: scaled)
-                    value.entity.setScale(newScale, relativeTo: value.entity.parent!)
-
-//                    print("LIGHT SCALE: \(scaled)")
-                    appModel.lightIntensity = scaled
-
-                }
-
+                // Apply the clamped position back to the entity
+                value.entity.position = clampedPosition
             }
             .onEnded { value in
-                // TODO: Save the item scale
-
-                entityTransformAtStartOfGesture = nil
+                // Optional: Add any behavior for when the drag gesture ends
             }
     }
 
