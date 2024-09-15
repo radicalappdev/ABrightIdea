@@ -23,7 +23,7 @@ def Xform "Root"
     )
     {
         quatf xformOp:orient = (1, 0, 0, 0)
-        float3 xformOp:scale = (1, 1, 1)
+        float3 xformOp:scale = (2, 2, 2)
         float3 xformOp:translate = (0.99590325, 1.1888162, -1.2053841)
         uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
 
@@ -42,13 +42,13 @@ def Xform "Root"
             def RealityKitStruct "Shape"
             {
                 float3 extent = (0.0558661, 0.1049836, 0.0558661)
-                float height = 0.1049836
-                float radius = 0.02793305
+                float height = 0.10498358
+                float radius = 0.027933048
                 token shapeType = "Capsule"
 
                 def RealityKitStruct "pose"
                 {
-                    float3 position = (0, 0.0717243, -4.0978193e-8)
+                    float3 position = (0, 0.07172429, -5.401671e-8)
                 }
             }
         }
@@ -140,6 +140,42 @@ def Xform "Root"
         {
             rel iblEntity = </Root/ImageBasedLight>
             uniform token info:id = "RealityKit.ImageBasedLightReceiver"
+        }
+
+        def RealityKitComponent "RigidBody"
+        {
+            bool gravityEnabled = 0
+            uniform token info:id = "RealityKit.RigidBody"
+            token motionType = "Static"
+
+            def RealityKitStruct "massFrame"
+            {
+                def RealityKitStruct "m_pose"
+                {
+                }
+            }
+
+            def RealityKitStruct "material"
+            {
+            }
+        }
+
+        def RealityKitComponent "Collider"
+        {
+            uint group = 1
+            uniform token info:id = "RealityKit.Collider"
+            uint mask = 4294967295
+            token type = "Default"
+
+            def RealityKitStruct "Shape"
+            {
+                float3 extent = (1, 1, 1)
+                token shapeType = "Box"
+
+                def RealityKitStruct "pose"
+                {
+                }
+            }
         }
     }
 

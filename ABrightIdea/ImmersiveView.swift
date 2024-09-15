@@ -115,19 +115,26 @@ struct ImmersiveView: View {
                 }
 
                 if let cleanUp = appModel.cleanEntity {
-                    if let entity = cleanUp.findEntity(named: "Glass")
-                    {
-                        if var material =  entity.components[ModelComponent.self]?.materials.first as? PhysicallyBasedMaterial {
+                    if let entity = cleanUp.findEntity(named: "Glass") {
+                        if var material = entity.components[ModelComponent.self]?.materials.first as? PhysicallyBasedMaterial {
                             material.emissiveIntensity = 0
                             entity.components[ModelComponent.self]?.materials[0] = material
                         }
+
+                        // Add physics body component to make it fall to the ground
+                        let physicsBody = PhysicsBodyComponent(massProperties: .default,
+                                                               material: nil,
+                                                               mode: .dynamic)
+                        cleanUp.components.set(physicsBody)
+
                     }
                 }
+
             }
         }
         .gesture(tapGesture)
         .gesture(dragGesture)
-        .gesture(scaleGesture)
+//        .gesture(scaleGesture)
     }
 
 
@@ -138,7 +145,7 @@ struct ImmersiveView: View {
                 if(appModel.selectedEntity?.name == value.entity.name) {
                     appModel.cleanEntity = value.entity
                     appModel.shouldAddBulb = true
-                } 
+                }
             }
     }
 
