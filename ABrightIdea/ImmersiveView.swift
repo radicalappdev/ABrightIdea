@@ -89,11 +89,29 @@ struct ImmersiveView: View {
                         let newLightBulb = lightBulbTemplate.clone(recursive: true)
                         newLightBulb.isEnabled = true
                         newLightBulb.name = UUID().uuidString
-                        let randomX = Float.random(in: -2...2)
-                        let randomY = Float.random(in: 0.75...2)
-                        let randomZ = Float.random(in: -2...2)
 
-                        newLightBulb.position = SIMD3(x: randomX, y: randomY, z: randomZ)
+                        let radius: Float = 4
+                        let floorHeight: Float = 0.75
+
+                        // Generate a random position within the allowed range
+                        let randomX = Float.random(in: -radius...radius)
+                        let randomY = Float.random(in: floorHeight...radius)
+                        let randomZ = Float.random(in: -radius...radius)
+
+                        var newPosition = SIMD3(x: randomX, y: randomY, z: randomZ)
+
+                        // Ensure the generated position is within the sphere's radius
+                        let distanceFromCenter = length(newPosition)
+                        if distanceFromCenter > radius {
+                            // Normalize the position and scale it to be on the sphere's surface
+                            newPosition = normalize(newPosition) * radius
+                            // Ensure the clamped Y value stays above the floor height
+                            newPosition.y = max(newPosition.y, floorHeight)
+                        }
+
+                        // Set the new position
+                        newLightBulb.position = newPosition
+
                         content.add(newLightBulb)
                         appModel.selectedEntity = newLightBulb
                         print("LIGHT Added: \(newLightBulb)")
