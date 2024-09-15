@@ -7,7 +7,7 @@
 
 def Xform "Root"
 {
-    reorder nameChildren = ["SelectedPointLight", "ImageBasedLight", "switch4_mp3", "switch1_mp3", "ExitSign", "GridMaterial", "LightBulb", "Dome", "Floor", "FloorMat", "DomeMat"]
+    reorder nameChildren = ["SelectedPointLight", "ImageBasedLight", "switch4_mp3", "switch1_mp3", "ExitHelper", "GridMaterial", "LightBulb", "Dome", "Floor", "FloorMat", "DomeMat"]
     def "GridMaterial" (
         active = true
         references = @Materials/GridMaterial.usda@
@@ -224,6 +224,11 @@ def Xform "Root"
                 {
                 }
             }
+        }
+
+        def RealityKitComponent "InputTarget"
+        {
+            uniform token info:id = "RealityKit.InputTarget"
         }
     }
 

@@ -28,4 +28,6 @@ class AppModel {
     var cleanEntity: Entity?
     var selectedEntity: Entity?
 
+    var exitCount: Int = 0
+
 }

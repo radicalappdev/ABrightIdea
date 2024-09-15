@@ -35,35 +35,6 @@ struct ImmersiveView: View {
                     dome.scale = .init(x: -1, y: 1, z: 1)
                 }
 
-                let exitSign = makeTextEntity(textValue: "EXIT")
-                exitSign.name = "ExitSign"
-
-                // Add an input and colliders
-                exitSign.components.set(InputTargetComponent())
-//                // Define a shape for the collision (e.g., a box that surrounds the text)
-//                let collisionShape = ShapeResource.generateBox(size: [2.0, 1, 1])
-//
-//                // Add a CollisionComponent with the generated shape
-//                exitSign.components.set(CollisionComponent(shapes: [collisionShape]))
-
-                // Define a box shape that approximately fits the size of the text
-                let boxWidth: Float = 2.0  // Adjust based on the width of your text
-                let boxHeight: Float = 1.0  // Adjust based on the height of your text
-                let boxDepth: Float = 1.0   // Adjust based on the extrusion depth of your text
-
-                // Create a box-shaped collision
-                let collisionShape = ShapeResource.generateBox(size: [boxWidth, boxHeight, boxDepth])
-                exitSign.components.set(CollisionComponent(shapes: [collisionShape]))
-
-
-                // add a hover effect
-                let hoverEffect = HoverEffectComponent()
-                exitSign.components.set(hoverEffect)
-
-                exitSign.position = .init(x: 0, y: 2, z: -3)
-                root.addChild(exitSign)
-
-
                 if let lightBulbTemplate = root.findEntity(named: "LightBulb") {
                     lightBulbTemplate.isEnabled = false
 
@@ -223,9 +194,14 @@ struct ImmersiveView: View {
             .targetedToAnyEntity()
             .onEnded { value in
 
-                if(value.entity.name == "ExitSign") {
-                    print("exit sign")
+                if(value.entity.name == "Floor") {
+                    appModel.exitCount += 1
+                    if appModel.exitCount >= 3 {
+                        print("exit time")
+                    }
                     return
+                } else {
+                    appModel.exitCount = 0
                 }
                 if(appModel.selectedEntity?.name == value.entity.name) {
                     appModel.cleanEntity = value.entity
@@ -273,45 +249,7 @@ struct ImmersiveView: View {
             }
     }
 
-    @MainActor private let faceMaterial: PhysicallyBasedMaterial = {
-        var faceMaterial = PhysicallyBasedMaterial()
-        faceMaterial.metallic = .init(floatLiteral: 1)
-        faceMaterial.baseColor = .init(tint: #colorLiteral(red: 0.9254902005, green: 0.2352941185, blue: 0.1019607857, alpha: 1))
-        faceMaterial.emissiveIntensity = .init(floatLiteral: 10)
-        return faceMaterial
-    }()
 
-    @MainActor private let borderMaterial: PhysicallyBasedMaterial = {
-        var borderMaterial = PhysicallyBasedMaterial()
-        borderMaterial.metallic = .init(floatLiteral: 0.15)
-        borderMaterial.roughness = .init(floatLiteral: 0.85)
-        borderMaterial.baseColor = .init(tint: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1))
-        return borderMaterial
-    }()
-
-    private func makeTextEntity(textValue: String) -> ModelEntity {
-
-        var textString = AttributedString(textValue)
-        textString.font = .systemFont(ofSize: 8.0, weight: .black)
-
-        let paragraphStyle = NSMutableParagraphStyle()
-        paragraphStyle.alignment = .center
-        textString.mergeAttributes(AttributeContainer([.paragraphStyle: paragraphStyle]))
-
-        var textOptions = MeshResource.GenerateTextOptions()
-        textOptions.containerFrame = CGRect(x: 0, y: 0, width: 100, height: 50)
-
-        var extrusionOptions = MeshResource.ShapeExtrusionOptions()
-        extrusionOptions.extrusionMethod = .linear(depth: 1)
-        extrusionOptions.materialAssignment = .init(front: 0, back: 0, extrusion: 1, frontChamfer: 1, backChamfer: 1)
-        extrusionOptions.chamferRadius = 0.1
-
-        let textMesh = try! MeshResource(extruding: textString,
-                                         textOptions: textOptions,
-                                         extrusionOptions: extrusionOptions)
-
-        return ModelEntity(mesh: textMesh, materials: [faceMaterial, borderMaterial])
-    }
 
 }
 
