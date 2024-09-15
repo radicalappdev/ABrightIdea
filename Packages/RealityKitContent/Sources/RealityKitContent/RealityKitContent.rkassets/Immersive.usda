@@ -119,6 +119,22 @@ def Xform "Root"
                 )
             }
         }
+
+        def RealityKitComponent "SpatialAudio"
+        {
+            uniform token info:id = "RealityKit.SpatialAudio"
+        }
+
+        def RealityKitComponent "AudioLibrary"
+        {
+            uniform token info:id = "RealityKit.AudioLibrary"
+
+            def RealityKitDict "resources"
+            {
+                string[] keys = ["impactGlass_heavy_000.mp3"]
+                rel values = </Root/impactGlass_heavy_000_mp3>
+            }
+        }
     }
 
     def Sphere "Dome" (
@@ -245,6 +261,12 @@ def Xform "Root"
             uniform token info:id = "RealityKit.ImageBasedLight"
             bool isGlobalIBL = 0
         }
+    }
+
+    def RealityKitAudioFile "impactGlass_heavy_000_mp3"
+    {
+        uniform asset file = @Sounds/impactGlass_heavy_000.mp3@
+        uniform bool shouldLoop = 0
     }
 }
 

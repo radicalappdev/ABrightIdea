@@ -104,7 +104,10 @@
       ],
       {
         "isExpanded" : true,
-        "isLocked" : false
+        "isLocked" : false,
+        "selectedAudioFilePrim" : {
+          "string" : "\/Root\/impactGlass_heavy_000_mp3"
+        }
       },
       [
         "AF09ED6F-1707-48FD-8720-65B998362C09",

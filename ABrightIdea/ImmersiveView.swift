@@ -35,6 +35,8 @@ struct ImmersiveView: View {
                     dome.scale = .init(x: -1, y: 1, z: 1)
                 }
 
+
+
                 if let lightBulbTemplate = root.findEntity(named: "LightBulb") {
                     lightBulbTemplate.isEnabled = false
 
@@ -158,9 +160,14 @@ struct ImmersiveView: View {
                     cleanUp.move(to: Transform(scale: cleanUp.scale, rotation: combinedRotation, translation: targetPosition),
                                  relativeTo: root,
                                  duration: 0.25)
+
+                    if let library = cleanUp.components[AudioLibraryComponent.self] {
+                        if let audioFile =  cleanUp.components[AudioLibraryComponent.self]?.resources.first {
+                            cleanUp.playAudio(library.resources["impactGlass_heavy_000.mp3"]!)
+                        }
+                    }
+                    
                 }
-
-
             }
         }
         .gesture(tapGesture)
