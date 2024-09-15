@@ -83,7 +83,7 @@ struct ImmersiveView: View {
                         newLightBulb.isEnabled = true
                         newLightBulb.name = UUID().uuidString
 
-                        let radius: Float = 4
+                        let radius: Float = 1.4
                         let floorHeight: Float = 0.75
 
                         // Generate a random position within the allowed range
@@ -126,31 +126,38 @@ struct ImmersiveView: View {
                 }
 
                 if let cleanUp = appModel.cleanEntity {
-                    if let entity = cleanUp.findEntity(named: "Glass") {
-                        if var material = entity.components[ModelComponent.self]?.materials.first as? PhysicallyBasedMaterial {
+                    if let glass = cleanUp.findEntity(named: "Glass") {
+                        if var material = glass.components[ModelComponent.self]?.materials.first as? PhysicallyBasedMaterial {
                             material.emissiveIntensity = 0
-                            entity.components[ModelComponent.self]?.materials[0] = material
+                            glass.components[ModelComponent.self]?.materials[0] = material
                         }
-
-                        // Force it to rotate onto one side
-                        let rotationX = simd_quatf(angle: -.pi * 84 / 180, axis: SIMD3(1, 0, 0))
-                        // Then apply a random rotation so they don't all face the same way
-                        let randomYRotation = Float.random(in: 0...2 * .pi)
-                        let rotationY = simd_quatf(angle: randomYRotation, axis: SIMD3(0, 1, 0))
-
-                        let combinedRotation = rotationY * rotationX
-                        cleanUp.setOrientation(combinedRotation, relativeTo: root)
-
-                        // Physics sucks on RealityKit (mainly colliders) so just shove it onto the ground.
-
-                        // Target position on the ground
-                        let targetPosition = SIMD3(x: cleanUp.position.x, y: 0.088, z: cleanUp.position.z)
-
-                        // Animate rotation and position
-                        cleanUp.move(to: Transform(scale: cleanUp.scale, rotation: combinedRotation, translation: targetPosition),
-                                     relativeTo: root,
-                                     duration: 0.25)
                     }
+
+                    if let base = cleanUp.findEntity(named: "Base") {
+                        if var material = base.components[ModelComponent.self]?.materials.first as? PhysicallyBasedMaterial {
+                            material.emissiveIntensity = 0
+                            base.components[ModelComponent.self]?.materials[0] = material
+                        }
+                    }
+
+                    // Force it to rotate onto one side
+                    let rotationX = simd_quatf(angle: -.pi * 84 / 180, axis: SIMD3(1, 0, 0))
+                    // Then apply a random rotation so they don't all face the same way
+                    let randomYRotation = Float.random(in: 0...2 * .pi)
+                    let rotationY = simd_quatf(angle: randomYRotation, axis: SIMD3(0, 1, 0))
+
+                    let combinedRotation = rotationY * rotationX
+                    cleanUp.setOrientation(combinedRotation, relativeTo: root)
+
+                    // Physics sucks on RealityKit (mainly colliders) so just shove it onto the ground.
+
+                    // Target position on the ground
+                    let targetPosition = SIMD3(x: cleanUp.position.x, y: 0.088, z: cleanUp.position.z)
+
+                    // Animate rotation and position
+                    cleanUp.move(to: Transform(scale: cleanUp.scale, rotation: combinedRotation, translation: targetPosition),
+                                 relativeTo: root,
+                                 duration: 0.25)
                 }
 
 
@@ -175,6 +182,11 @@ struct ImmersiveView: View {
         DragGesture()
             .targetedToAnyEntity()
             .onChanged { value in
+
+                // Only drag the selected entity
+                if(appModel.selectedEntity?.name != value.entity.name) {
+                    return
+                }
                 let radius: Float = 4
                 let floorHeight: Float = 0.1
 

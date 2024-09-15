@@ -91,11 +91,33 @@ def Xform "Root"
         over "Base"
         {
             float3 xformOp:translate = (1.5483238e-8, -0.008224115, -0.00024247059)
+
+            def RealityKitComponent "ImageBasedLightReceiver"
+            {
+                rel iblEntity = </Root/ImageBasedLight>
+                uniform token info:id = "RealityKit.ImageBasedLightReceiver"
+            }
         }
 
         over "Glass"
         {
             float3 xformOp:translate = (0, 0, 0)
+
+            def RealityKitComponent "ImageBasedLightReceiver"
+            {
+                rel iblEntity = </Root/ImageBasedLight>
+                uniform token info:id = "RealityKit.ImageBasedLightReceiver"
+            }
+        }
+
+        over "BaseMat"
+        {
+            over "UsdPreviewSurface_1"
+            {
+                color3f inputs:emissiveColor = (0.69803923, 0.69803923, 0.69803923) (
+                    colorSpace = "lin_srgb"
+                )
+            }
         }
     }
 
